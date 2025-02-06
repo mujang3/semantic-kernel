@@ -1,5 +1,8 @@
 ﻿using System.ClientModel;
 
+using Azure;
+using Azure.AI.OpenAI;
+
 using Microsoft.Extensions.Configuration;
 using Microsoft.SemanticKernel;
 
@@ -18,7 +21,7 @@ if (string.IsNullOrWhiteSpace(config["Azure:OpenAI:Endpoint"]!) == false)
         new AzureKeyCredential(config["Azure:OpenAI:ApiKey"]!));
 
     builder.AddAzureOpenAIChatCompletion(
-                deploymentName: config["Azure:OpenAI:DeploymentName"]!,
+                deploymentName: config["Azure:OpenAI:DeploymentNames:ChatCompletion"]!,
                 azureOpenAIClient: client);
 }
 else
@@ -28,7 +31,7 @@ else
         options: new OpenAIClientOptions { Endpoint = new Uri(config["GitHub:Models:Endpoint"]!) });
 
     builder.AddOpenAIChatCompletion(
-                modelId: config["GitHub:Models:ModelId"]!,
+                modelId: config["GitHub:Models:ModelIds:ChatCompletion"]!,
                 openAIClient: client);
 }
 var kernel = builder.Build();
